@@ -8,8 +8,8 @@ JS file for Public API Requests
 Globals
 ****************************************/
 const container = document.getElementById('gallery');
-const cards = document.getElementsByClassName('card');
-// const body = document.querySelector('body');
+console.log(cards);
+
 
 /****************************************
 Fetch Functions
@@ -42,6 +42,7 @@ function generateCard(data) {
     container.innerHTML += html;
 }
 
+
 function generateModal(data) {
     const modal = `
     <div class="modal-container">
@@ -67,7 +68,13 @@ function generateModal(data) {
 /****************************************
 Event Listeners
 ****************************************/
-
+// Need to figure out how to make this wait until the cards are generated!
+//
+// const cards = document.getElementsByClassName('card');
 for (let i = 0; i < cards.length; i++) {
-    cards[i].addEventListener('click', generateModal);
+    cards[i].children.addEventListener('click', function(event){
+            console.log(cards[i])
+            console.log(event);
+            console.log('click');
+    });
 }
