@@ -8,7 +8,7 @@ JS file for Public API Requests
 Globals
 ****************************************/
 const container = document.getElementById('gallery');
-console.log(cards);
+
 
 
 /****************************************
@@ -25,6 +25,7 @@ fetch('https://randomuser.me/api/?results=12')
 /****************************************
 Helper Functions
 ****************************************/
+
 
 function generateCard(data) {
     const html = `
@@ -71,10 +72,8 @@ Event Listeners
 // Need to figure out how to make this wait until the cards are generated!
 //
 // const cards = document.getElementsByClassName('card');
-for (let i = 0; i < cards.length; i++) {
-    cards[i].children.addEventListener('click', function(event){
-            console.log(cards[i])
-            console.log(event);
-            console.log('click');
-    });
-}
+$(document).ready(function(){
+    let cardList = document.getElementsByClassName('card');
+    console.log(cardList);
+    console.log(cardList.length);
+});
