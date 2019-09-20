@@ -8,7 +8,6 @@ JS file for Public API Requests
 Globals
 ****************************************/
 const container = document.getElementById('gallery');
-const modalContainer = document.getElementById('modal-container')
 
 
 
@@ -58,9 +57,9 @@ function generateCard(data) {
 
 function generateModal(data) {
     const modal = `
-    <div id="modal-container">
+    <div class="container-modal">
         <div id="${data.name.first}" class="modal">
-            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+            <button onclick="dismiss()" type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
                 <img class="modal-img" src="${data.picture.large}" alt="profile picture">
                 <h3 id="first-last" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
@@ -93,7 +92,19 @@ function addListener() {
             let modalElement = document.getElementById(firstName);
             console.log(firstName);
             console.log('modal',modalElement);
-            modalElement.style.display = '';
+            modalElement.parentElement.className = 'modal-container';
+            modalElement.style.display = 'block';
         });
+    }
+}
+
+function dismiss(){
+    let modalContainers = document.querySelectorAll('div.modal-container');
+    for (let i = 0; i < modalContainers.length; i++) {
+        modalContainers[i].style.display = 'none';
+    }
+    let modals = document.querySelectorAll('.modal')
+    for (let i = 0; i < modals.length; i++) {
+        modals[i].style.display = 'none';
     }
 }
