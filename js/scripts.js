@@ -58,7 +58,7 @@ function generateCard(data) {
 //function generateModal takes the employee data and assigns them a unique id based on their name.  The other employee data is used to generate the html. That html is then appended to the body.
 function generateModal(data) {
     const modal = `
-    <div class="container-modal">
+    <div class="inactive-modal">
         <div id="${data.name.first}" class="modal">
             <button onclick="dismiss()" type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
@@ -104,7 +104,7 @@ function nextButton () {
 setTimeout(disableButtons, 2000)
 
 function disableButtons () {
-    let modalContainers = document.querySelectorAll('div.container-modal');
+    let modalContainers = document.querySelectorAll('div.inactive-modal');
     let modalContainersLastElement = modalContainers.length - 1;
     let firstPrevButton = modalContainers[0].lastElementChild.firstElementChild;
     let lastNextButton = modalContainers[modalContainersLastElement].lastElementChild.lastElementChild;
@@ -120,6 +120,7 @@ function dismiss(){
     let modalContainers = document.querySelectorAll('div.modal-container');
 
     for (let i = 0; i < modalContainers.length; i++) {
+        modalContainers[i].className = 'inactive-modal';
         modalContainers[i].style.display = 'none';
     }
     let modals = document.querySelectorAll('.modal');
