@@ -73,24 +73,25 @@ function generateModal(data) {
             </div>
         </div>
         <div id="${data.name.first}-btn" class="modal-btn-container" style="display: none">
-            <button onclick="prev()" "type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-            <button onclick="next()" "type="button" id="modal-next" class="modal-next btn">Next</button>
+            <button onclick="prevButton()" "type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+            <button onclick="nextButton()" "type="button" id="modal-next" class="modal-next btn">Next</button>
         </div>
     </div>
     `;
     $('body').append(modal);
 }
 
-function prev () {
-    let prevModal = event.currentTarget.parentElement.parentElement.previousElementSibling
-    dismiss();
-    prevModal.className = 'modal-container';
-    prevModal.style.display = 'block'
-    prevModal.firstElementChild.style.display = 'block';
-    prevModal.lastElementChild.style.display = 'block';
+function prevButton () {
+        let prevModal = event.currentTarget.parentElement.parentElement.previousElementSibling
+        dismiss();
+        prevModal.className = 'modal-container';
+        prevModal.style.display = 'block'
+        prevModal.firstElementChild.style.display = 'block';
+        prevModal.lastElementChild.style.display = 'block';
+
 }
 
-function next () {
+function nextButton () {
     let nextModal = event.currentTarget.parentElement.parentElement.nextElementSibling
     console.log(nextModal);
     dismiss();
@@ -100,6 +101,19 @@ function next () {
     nextModal.lastElementChild.style.display = 'block';
 
 }
+setTimeout(disableButtons, 2000)
+
+function disableButtons () {
+    let modalContainers = document.querySelectorAll('div.container-modal');
+    let modalContainersLastElement = modalContainers.length - 1;
+    let firstPrevButton = modalContainers[0].lastElementChild.firstElementChild;
+    let lastNextButton = modalContainers[modalContainersLastElement].lastElementChild.lastElementChild;
+
+    firstPrevButton.disabled = true;
+    lastNextButton.disabled = true;
+
+}
+
 
 //function dismiss finds all the modals containers and modals in the body. It uses a for loop to re-assign their style.display to 'none';
 function dismiss(){
