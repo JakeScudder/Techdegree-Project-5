@@ -15,17 +15,18 @@ const container = document.getElementById('gallery');
 /****************************************
 Fetch Functions
 ****************************************/
-//Fetch for generateCard functionality
+
+//Initial fetch requests that pulls 12 random employees and then generates the cards and modals
 fetch('https://randomuser.me/api/?results=12')
     .then(response => response.json())
     .then(data => data.results.map(employee => {
         generateCard(employee);
         generateModal(employee);
     }))
+    //Modal Divs are then hidden
     .then(function () {
         const modalDiv = document.getElementsByClassName('modal');
         for(let i = 0; i < modalDiv.length; i++) {
-            console.log(modalDiv[i]);
         modalDiv[i].style.display = 'none';
         }
     })
@@ -37,7 +38,7 @@ fetch('https://randomuser.me/api/?results=12')
 Helper Functions
 ****************************************/
 
-
+//function generateCard takes the employee data from the fetch request and writes the html.  That html is then added to the gallery container
 function generateCard(data) {
     const html = `
     <div class="card">
@@ -54,7 +55,7 @@ function generateCard(data) {
     container.innerHTML += html;
 }
 
-
+//function generateModal takes the employee data and assigns them a unique id based on their name.  The other employee data is used to generate the html. That html is then appended to the body.
 function generateModal(data) {
     const modal = `
     <div class="container-modal">
@@ -71,40 +72,70 @@ function generateModal(data) {
                 <p class="modal-text">Birthday: ${data.dob.date}</p>
             </div>
         </div>
+        <div id="${data.name.first}-btn" class="modal-btn-container" style="display: none">
+            <button onclick="prev()" "type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+            <button onclick="next()" "type="button" id="modal-next" class="modal-next btn">Next</button>
+        </div>
     </div>
     `;
     $('body').append(modal);
+}
+
+function prev () {
+    let prevModal = event.currentTarget.parentElement.parentElement.previousElementSibling
+    dismiss();
+    prevModal.className = 'modal-container';
+    prevModal.style.display = 'block'
+    prevModal.firstElementChild.style.display = 'block';
+    prevModal.lastElementChild.style.display = 'block';
+}
+
+function next () {
+    let nextModal = event.currentTarget.parentElement.parentElement.nextElementSibling
+    console.log(nextModal);
+    dismiss();
+    nextModal.className = 'modal-container';
+    nextModal.style.display = 'block'
+    nextModal.firstElementChild.style.display = 'block';
+    nextModal.lastElementChild.style.display = 'block';
+
+}
+
+//function dismiss finds all the modals containers and modals in the body. It uses a for loop to re-assign their style.display to 'none';
+function dismiss(){
+    let modalContainers = document.querySelectorAll('div.modal-container');
+
+    for (let i = 0; i < modalContainers.length; i++) {
+        modalContainers[i].style.display = 'none';
+    }
+    let modals = document.querySelectorAll('.modal');
+    for (let i = 0; i < modals.length; i++) {
+        modals[i].style.display = 'none';
+    }
 }
 
 /****************************************
 Event Listeners
 ****************************************/
 
+//A brief timeout function to make sure the fetch request is completed before the addListener function assigns event listeners to each card.
 setTimeout(addListener, 1500)
 
 
+//function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
 function addListener() {
     let cards = document.getElementsByClassName('card');
     for (let i = 0; i < cards.length; i++) {
+        //The event listener takes the name from the card and uses .substr.toLowerCase in order to search for the unique ID attached to the modal card.  Then that modal card's className is changed and the style.display is changed to 'block'.
         cards[i].addEventListener('click', function(event) {
             let name = event.currentTarget.children[1].children[0].innerText
             let firstName = name.substr(0, name.indexOf(" ")).toLowerCase();
             let modalElement = document.getElementById(firstName);
-            console.log(firstName);
-            console.log('modal',modalElement);
+            let buttonID = `${firstName}-btn`;
+            let modalButton = document.getElementById(buttonID)
             modalElement.parentElement.className = 'modal-container';
             modalElement.style.display = 'block';
+            modalButton.style.display = 'block';
         });
-    }
-}
-
-function dismiss(){
-    let modalContainers = document.querySelectorAll('div.modal-container');
-    for (let i = 0; i < modalContainers.length; i++) {
-        modalContainers[i].style.display = 'none';
-    }
-    let modals = document.querySelectorAll('.modal')
-    for (let i = 0; i < modals.length; i++) {
-        modals[i].style.display = 'none';
     }
 }
