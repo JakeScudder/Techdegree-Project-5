@@ -10,14 +10,12 @@ Globals
 const container = document.getElementById('gallery');
 
 
-
-
 /****************************************
 Fetch Functions
 ****************************************/
 
 //Initial fetch requests that pulls 12 random employees and then generates the cards and modals
-fetch('https://randomuser.me/api/?results=12')
+fetch('https://randomuser.me/api/?results=12&hl=en')
     .then(response => response.json())
     .then(data => data.results.map(employee => {
         generateCard(employee);
@@ -30,6 +28,9 @@ fetch('https://randomuser.me/api/?results=12')
         modalDiv[i].style.display = 'none';
         }
     })
+
+
+
 
 
 
@@ -79,6 +80,37 @@ function generateModal(data) {
     </div>
     `;
     $('body').append(modal);
+}
+
+function createSearchBar() {
+    const search = `
+    <form action="#" method="get">
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+        <input onclick="searchFunction()" type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+    `;
+    $('.search-container').append(search);
+}
+
+function searchFunction(){
+    console.log(event.target.previousElementSibling.value);
+    let names = document.querySelectorAll('.card');
+    names.forEach(name => {
+        if (name.lastElementChild.firstElementChild.textContent.includes(event.target.previousElementSibling.value.toLowerCase())) {
+
+            let wholeName = name.lastElementChild.firstElementChild.textContent;
+            let first = wholeName.substr(0, wholeName.indexOf(" "))
+            console.log(first);
+            let searchModal = document.getElementById(first);
+            let buttonID = `${first}-btn`;
+            let modalButton = document.getElementById(buttonID)
+            searchModal.parentElement.className = 'modal-container';
+            searchModal.style.display = 'block';
+            searchModal.parentElement.style.display = '';
+            modalButton.style.display = 'block';
+        }
+    })
+
 }
 
 function prevButton () {
@@ -135,7 +167,8 @@ Event Listeners
 
 //A brief timeout function to make sure the fetch request is completed before the addListener function assigns event listeners to each card.
 setTimeout(addListener, 1500)
-
+setTimeout(createSearchBar, 1000)
+// setTimeout(searchListener, 2000)
 
 //function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
 function addListener() {
@@ -150,7 +183,16 @@ function addListener() {
             let modalButton = document.getElementById(buttonID)
             modalElement.parentElement.className = 'modal-container';
             modalElement.style.display = 'block';
+            modalElement.parentElement.style.display = '';
             modalButton.style.display = 'block';
         });
     }
 }
+
+// function searchListener( ) {
+//     const submitButton = document.querySelector('#search-submit');
+//     submitButton.addEventListener('submit', function(event) {
+//         console.log('click');
+//         searchFunction(event);
+//     })
+// }
