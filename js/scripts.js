@@ -86,18 +86,13 @@ function createSearchBar() {
     const search = `
     <form class="animated fadeIn" action="#" method="get">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
-        <input onclick="searchFunction()" type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
     </form>
     `;
     $('.search-container').append(search);
 }
 //A timeout is used to create the search bar after the cards have been generated.
 setTimeout(createSearchBar, 1000)
-
-
-// onclick="searchFunction()"
-
-
 
 //When the submit button is clicked, searchFunction selects all the employee cards and then uses the .forEach method to search each card.  If that card includes the letters in the search bar, the modal with that ID will be put on the screen.
 function searchFunction(){
@@ -116,7 +111,7 @@ function searchFunction(){
 
         }
     })
-    setTimeout(event.target.previousElementSibling.value = '', 1000);
+    //setTimeout(event.target.previousElementSibling.value = '', 1000);
 
 }
 
@@ -175,9 +170,18 @@ Event Listeners
 
 //A brief timeout function to make sure the fetch request is completed before the addListener function assigns event listeners to each card.
 setTimeout(addListener, 1500)
+setTimeout(searchListener, 1500)
 
-
-
+function searchListener() {
+    let submitButton = document.querySelector('input#search-submit');
+    let input = document.querySelector('input#search-input');
+    console.log(submitButton);
+    submitButton.addEventListener('click', function(event){
+        event.preventDefault();
+        searchFunction();
+        input.value = '';
+    })
+}
 
 //function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
 function addListener() {
