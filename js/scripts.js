@@ -94,6 +94,11 @@ function createSearchBar() {
 //A timeout is used to create the search bar after the cards have been generated.
 setTimeout(createSearchBar, 1000)
 
+
+// onclick="searchFunction()"
+
+
+
 //When the submit button is clicked, searchFunction selects all the employee cards and then uses the .forEach method to search each card.  If that card includes the letters in the search bar, the modal with that ID will be put on the screen.
 function searchFunction(){
     let names = document.querySelectorAll('.card');
@@ -111,7 +116,7 @@ function searchFunction(){
 
         }
     })
-    event.target.previousElementSibling.value = '';
+    setTimeout(event.target.previousElementSibling.value = '', 1000);
 
 }
 
@@ -170,6 +175,8 @@ Event Listeners
 
 //A brief timeout function to make sure the fetch request is completed before the addListener function assigns event listeners to each card.
 setTimeout(addListener, 1500)
+
+
 
 
 //function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
