@@ -85,7 +85,7 @@ header h1 {
     width: 100%;
     max-width: 1200px;
     margin: auto;
-	-webkit-animation-dealy: .25s;
+	-webkit-animation-delay: .75s;
 }
 
 .card {

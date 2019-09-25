@@ -108,11 +108,8 @@ function searchFunction(){
             searchModal.style.display = 'block';
             searchModal.parentElement.style.display = '';
             modalButton.style.display = 'block';
-
         }
     })
-    //setTimeout(event.target.previousElementSibling.value = '', 1000);
-
 }
 
 //function prevButton finds the previousElementSibling of the event and brings that modal to the screen.
@@ -172,6 +169,7 @@ Event Listeners
 setTimeout(addListener, 1500)
 setTimeout(searchListener, 1500)
 
+//adds event listener to search submit button
 function searchListener() {
     let submitButton = document.querySelector('input#search-submit');
     let input = document.querySelector('input#search-input');
