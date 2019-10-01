@@ -15,6 +15,7 @@ Fetch Functions
 ****************************************/
 
 //Initial fetch requests that pulls 12 random employees and then generates the cards and modals
+
 fetch('https://randomuser.me/api/?results=12&nat=us')
     .then(response => response.json())
     .then(data => data.results.map(employee => {
@@ -28,6 +29,12 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
         modalDiv[i].style.display = 'none';
         }
     })
+    .then(function () {
+        createSearchBar();
+        disableButtons();
+        addListener();
+    })
+
 
 
 
@@ -58,9 +65,10 @@ function generateCard(data) {
 
 //function generateModal takes the employee data and assigns them a unique id based on their name.  The other employee data is used to generate the html. That html is then appended to the body.
 function generateModal(data) {
+    const id = `${data.name.first}`.toLowerCase();
     const modal = `
     <div class="inactive-modal">
-        <div id="${data.name.first}" class="modal">
+        <div id="${id}" class="modal">
             <button onclick="dismiss()" type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
                 <img class="modal-img" src="${data.picture.large}" alt="profile picture">
@@ -72,7 +80,7 @@ function generateModal(data) {
                 <p class="modal-text">${data.location.street}, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
             </div>
         </div>
-        <div id="${data.name.first}-btn" class="modal-btn-container" style="display: none">
+        <div id="${id}-btn" class="modal-btn-container" style="display: none">
             <button onclick="prevButton()" "type="button" id="modal-prev" class="modal-prev btn">Prev</button>
             <button onclick="nextButton()" "type="button" id="modal-next" class="modal-next btn">Next</button>
         </div>
@@ -81,35 +89,43 @@ function generateModal(data) {
     $('body').append(modal);
 }
 
+/*****************************************
+Search Bar Functionality
+*****************************************/
+
+
+const noResults = document.createElement('h3');
+
 //function createSearchBar sets up the html for the search bar and appends it to the search container.
 function createSearchBar() {
     const search = `
     <form class="animated fadeIn" action="#" method="get">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
-        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
     </form>
     `;
     $('.search-container').append(search);
 }
-//A timeout is used to create the search bar after the cards have been generated.
-setTimeout(createSearchBar, 1000)
+
 
 //When the submit button is clicked, searchFunction selects all the employee cards and then uses the .forEach method to search each card.  If that card includes the letters in the search bar, the modal with that ID will be put on the screen.
-function searchFunction(){
+function searchFunction(input, cardList){
+    let matchGallery = [];
     let names = document.querySelectorAll('.card');
     names.forEach(name => {
-        if (name.lastElementChild.firstElementChild.textContent.includes(event.target.previousElementSibling.value.toLowerCase())) {
-            let wholeName = name.lastElementChild.firstElementChild.textContent;
-            let first = wholeName.substr(0, wholeName.indexOf(" "))
-            let searchModal = document.getElementById(first);
-            let buttonID = `${first}-btn`;
-            let modalButton = document.getElementById(buttonID)
-            searchModal.parentElement.className = 'modal-container';
-            searchModal.style.display = 'block';
-            searchModal.parentElement.style.display = '';
-            modalButton.style.display = 'block';
+        names.style.display = 'none';
+        if (name.lastElementChild.firstElementChild.textContent.includes(event.target.value)) {
+            matchGallery.push(name);
+            noResults.textContent = '';
         }
     })
+    if(matchGallery.length === 0 && input.value.length !== 0) {
+        noResults.textContent = 'Sorry, No Results Found';
+        input.appendChild(noResults);
+    } else {
+        names.forEach(name => {
+            name.style.display = '';
+        });
+    }
 }
 
 //function prevButton finds the previousElementSibling of the event and brings that modal to the screen.
@@ -146,7 +162,7 @@ function disableButtons () {
 
 }
 
-setTimeout(disableButtons, 2000)
+
 
 //function dismiss finds all the modals containers and modals in the body. It uses a for loop to re-assign their style.display to 'none';
 function dismiss(){
@@ -165,19 +181,11 @@ function dismiss(){
 Event Listeners
 ****************************************/
 
-//A brief timeout function to make sure the fetch request is completed before the addListener function assigns event listeners to each card.
-setTimeout(addListener, 1500)
-setTimeout(searchListener, 1500)
-
 //adds event listener to search submit button
 function searchListener() {
-    let submitButton = document.querySelector('input#search-submit');
-    let input = document.querySelector('input#search-input');
-    console.log(submitButton);
-    submitButton.addEventListener('click', function(event){
-        event.preventDefault();
+    let input = document.getElementById('#search-input');
+    input.addEventListener('keyup', function(event){
         searchFunction();
-        input.value = '';
     })
 }
 
