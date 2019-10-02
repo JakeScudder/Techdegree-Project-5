@@ -147,6 +147,9 @@ function searchListener() {
     })
 }
 
+/*****************************************
+Buttons
+*****************************************/
 //function prevButton finds the previousElementSibling of the event and brings that modal to the screen.
 function prevButton () {
         let prevModal = event.currentTarget.parentElement.parentElement.previousElementSibling
@@ -181,8 +184,6 @@ function disableButtons () {
 
 }
 
-
-
 //function dismiss finds all the modals containers and modals in the body. It uses a for loop to re-assign their style.display to 'none';
 function dismiss(){
     let modalContainers = document.querySelectorAll('div.modal-container');
@@ -199,8 +200,6 @@ function dismiss(){
 /****************************************
 Event Listeners
 ****************************************/
-
-
 
 //function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
 function addListener() {
