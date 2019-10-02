@@ -37,6 +37,7 @@ fetch('https://randomuser.me/api/?results=12&nat=us')
 
 
 
+setTimeout(searchListener, 3000)
 
 
 
@@ -77,7 +78,9 @@ function generateModal(data) {
                 <p class="modal-text cap">${data.location.city}</p>
                 <hr>
                 <p class="modal-text">${data.phone}</p>
-                <p class="modal-text">${data.location.street}, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
+                <p class="modal-text">${data.location.street.number} ${data.location.street.name}</p>
+                <p class="modal-text">
+                 ${data.location.city}, ${data.location.state}</p> <p class="modal-text">${data.location.postcode}</p>
             </div>
         </div>
         <div id="${id}-btn" class="modal-btn-container" style="display: none">
@@ -99,8 +102,8 @@ const noResults = document.createElement('h3');
 //function createSearchBar sets up the html for the search bar and appends it to the search container.
 function createSearchBar() {
     const search = `
-    <form class="animated fadeIn" action="#" method="get">
-        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+    <form id="search-bar" class="animated fadeIn" action="#" method="get">
+        <input type="search" id="search-input" placeholder="Search...">
     </form>
     `;
     $('.search-container').append(search);
@@ -109,23 +112,39 @@ function createSearchBar() {
 
 //When the submit button is clicked, searchFunction selects all the employee cards and then uses the .forEach method to search each card.  If that card includes the letters in the search bar, the modal with that ID will be put on the screen.
 function searchFunction(input, cardList){
+    let searchBar = document.getElementById('search-bar');
     let matchGallery = [];
     let names = document.querySelectorAll('.card');
     names.forEach(name => {
-        names.style.display = 'none';
-        if (name.lastElementChild.firstElementChild.textContent.includes(event.target.value)) {
+        name.style.display='none';
+        if (input.value.length === 0) {
+            noResults.textContent = '';
+        }
+        if (name.lastElementChild.firstElementChild.textContent.toLowerCase().includes(input.value.toLowerCase())) {
             matchGallery.push(name);
             noResults.textContent = '';
+
         }
     })
     if(matchGallery.length === 0 && input.value.length !== 0) {
         noResults.textContent = 'Sorry, No Results Found';
-        input.appendChild(noResults);
+        noResults.style.display = 'block';
+        searchBar.appendChild(noResults);
     } else {
-        names.forEach(name => {
+        matchGallery.forEach(name => {
             name.style.display = '';
         });
     }
+}
+
+//adds event listener to search submit button
+function searchListener() {
+    let input = document.getElementById('search-input');
+    let cards = document.querySelectorAll('.card');
+    input.addEventListener('keyup', () =>{
+        console.log(event)
+        searchFunction(input, cards);
+    })
 }
 
 //function prevButton finds the previousElementSibling of the event and brings that modal to the screen.
@@ -181,13 +200,7 @@ function dismiss(){
 Event Listeners
 ****************************************/
 
-//adds event listener to search submit button
-function searchListener() {
-    let input = document.getElementById('#search-input');
-    input.addEventListener('keyup', function(event){
-        searchFunction();
-    })
-}
+
 
 //function addListener selects all elements with the class name 'card' and runs a for loop to assign eventListeners to each card.
 function addListener() {
