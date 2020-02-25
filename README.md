@@ -15,5 +15,5 @@ JavaScript, HTML, CSS, Fetch Requests
 
 ### How To Use
 
-After cloning this respository you can:
+After cloning this respository you can:  
 Copy the index.html file and paste it into your browser.
