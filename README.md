@@ -6,7 +6,7 @@
 </div>
 
 ### Description
-This project will utilize public API requests to propagate a webpage with random employees contact information. It will also utilize some jQuery.
+This project will utilize public API requests to propagate a webpage with random contact information.
 
 Check it out here: https://jakescudder.github.io/random-user-generator
 
